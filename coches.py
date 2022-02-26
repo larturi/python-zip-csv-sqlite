@@ -28,6 +28,28 @@ def crear_tabla_coches(conexion):
     cursor = conexion.cursor()
     cursor.execute('CREATE TABLE coches(marca text, modelo text, combustible text, transmision text, estado text, matricula text, kilometraje integer, potencia real, precio real)')
     conexion.commit()
+    
+def insertar_tabla_coches(conexion, coche):
+    cursor = conexion.cursor()
+    cursor.execute('INSERT INTO coches VALUES(?,?,?,?,?,?,?,?,?)', coche)
+    conexion.commit()
+    
+def grabar_coche(conexion, datos):
+    for fila in datos.itertuples():
+        marca = fila[1]
+        modelo = fila[2]
+        combustible = fila[3]
+        transmision = fila[4]
+        estado = fila[5]
+        matricula = fila[6]
+        kilometraje = fila[7]
+        potencia = fila[8]
+        precio = fila[9]
+        
+        coche = (marca, modelo, combustible, transmision, estado, matricula, kilometraje, potencia, precio)
+        
+        insertar_tabla_coches(conexion, coche)
+
 
 def procesar_datos():
     nombre_fichero = sys.argv[1]
@@ -37,6 +59,8 @@ def procesar_datos():
 
     conexion = crear_conexion_bd()
     crear_tabla_coches(conexion)
+    
+    grabar_coche(conexion, datos)
 
     print(datos)
 
