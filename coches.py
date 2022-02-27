@@ -106,10 +106,8 @@ def procesar_datos():
 
     descomprimir_fichero(nombre_fichero)
     datos = leer_datos(nombre_fichero)
-    
     conexion = crear_conexion_bd()
     crear_tabla_coches(conexion)
-    
     grabar_coche(conexion, datos)
     
     # Consultas
