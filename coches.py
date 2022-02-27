@@ -78,6 +78,14 @@ def count_coches(conexion):
     cursor.execute('SELECT COUNT(*) FROM coches')
     count = cursor.fetchall()
     return count[0][0]
+
+def suma_importe_coches(conexion):
+    cursor = conexion.cursor()
+    cursor.execute('SELECT SUM(precio) FROM coches')
+    suma = cursor.fetchall()[0][0]
+    dinero = '{:,}'.format(suma).replace(',', '.')
+    print('\nImporte total: ${}'.format(str(dinero)))
+    return suma
     
 def procesar_datos():
     nombre_fichero = sys.argv[1]
@@ -95,6 +103,7 @@ def procesar_datos():
     # Consultas
     count_coches(conexion)
     consultar_coches(conexion)
+    suma_importe_coches(conexion)
 
 if __name__ == '__main__':
 
