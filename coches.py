@@ -86,6 +86,13 @@ def suma_importe_coches(conexion):
     dinero = '{:,}'.format(suma).replace(',', '.')
     print('\nImporte total: ${}'.format(str(dinero)))
     return suma
+
+def coche_mas_barato(conexion):
+    cursor = conexion.cursor()
+    cursor.execute('SELECT marca, modelo, MIN(precio) FROM coches')
+    datos = cursor.fetchall()
+    return datos
+
     
 def procesar_datos():
     nombre_fichero = sys.argv[1]
@@ -104,6 +111,14 @@ def procesar_datos():
     count_coches(conexion)
     consultar_coches(conexion)
     suma_importe_coches(conexion)
+    
+    # COche mas barato
+    datos = coche_mas_barato(conexion)
+    marca = datos[0][0]
+    modelo = datos[0][1]
+    precio = datos[0][2]
+    print('\nCoche mas barato -> Marca: {}, Modelo: {}, Precio: {}'.format(marca, modelo, precio))
+    
 
 if __name__ == '__main__':
 
