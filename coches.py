@@ -84,7 +84,7 @@ def suma_importe_coches(conexion):
     cursor.execute('SELECT SUM(precio) FROM coches')
     suma = cursor.fetchall()[0][0]
     dinero = '{:,}'.format(suma).replace(',', '.')
-    print('\nImporte total: ${}'.format(str(dinero)))
+    print('\n ✓ Importe total: ${}'.format(str(dinero)))
     return suma
 
 def coche_mas_barato(conexion):
@@ -93,7 +93,12 @@ def coche_mas_barato(conexion):
     datos = cursor.fetchall()
     return datos
 
-    
+def precio_medio_marca(conexion):
+    cursor = conexion.cursor()
+    cursor.execute('SELECT marca, AVG(precio) FROM coches GROUP BY marca')
+    datos = cursor.fetchall()
+    return datos
+
 def procesar_datos():
     nombre_fichero = sys.argv[1]
     
@@ -112,13 +117,20 @@ def procesar_datos():
     consultar_coches(conexion)
     suma_importe_coches(conexion)
     
-    # COche mas barato
+    # Coche mas barato
     datos = coche_mas_barato(conexion)
     marca = datos[0][0]
     modelo = datos[0][1]
     precio = datos[0][2]
-    print('\nCoche mas barato -> Marca: {}, Modelo: {}, Precio: {}'.format(marca, modelo, precio))
+    print('\n ✓ Coche mas barato -> Marca: {}, Modelo: {}, Precio: {}'.format(marca, modelo, precio))
     
+    # Precio medio por marca
+    print('\n ✓ Precio promedio por marca:')
+    datos = precio_medio_marca(conexion)
+    for dato in datos:
+        marca = dato[0]
+        precio = dato[1]
+        print('-> Marca: {}, Precio: {}'.format(marca, precio))
 
 if __name__ == '__main__':
 
